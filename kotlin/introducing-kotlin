@@ -1,0 +1,321 @@
+Get started with Kotlin
+https://kotlinlang.org/docs/basic-syntax.html#type-checks-and-automatic-casts
+Kotlin is a modern but already mature programming language aimed to make developers happier. It’s concise, safe, interoperable with Java and other languages, and provides many ways to reuse code between multiple platforms for productive programming.
+
+Pick it up to start building powerful applications!
+
+/**
+ * You can edit, run, and share this code. 
+ * play.kotlinlang.org 
+ */
+
+fun main() {
+    println("Hello, world!!!")
+}
+
+Basic Syntax
+Package definition and imports
+Package specification should be at the top of the source file.
+
+package my.demo
+
+import kotlin.text.*
+
+// ...
+
+Program entry point
+An entry point of a Kotlin application is the main function.
+
+fun main() {
+    println("Hello world!")
+}
+
+
+Another form of main accepts a variable number of String arguments.
+
+fun main(args: Array<String>) {
+    println(args.contentToString())
+}
+
+Print to the standard output
+print prints its argument to the standard output.
+
+print("Hello ")
+print("world!")
+
+println prints its arguments and adds a line break, so that the next thing you print appears on the next line.
+
+println("Hello world!")
+println(42)
+
+Functions
+A function with two Int parameters and Int return type.
+
+fun sum(a: Int, b: Int): Int {
+    return a + b
+}
+
+A function body can be an expression. Its return type is inferred.
+
+fun sum(a: Int, b: Int) = a + b
+
+A function that returns no meaningful value.
+
+fun printSum(a: Int, b: Int): Unit {
+    println("sum of $a and $b is ${a + b}")
+}
+
+Unit return type can be omitted.
+
+fun printSum(a: Int, b: Int) {
+    println("sum of $a and $b is ${a + b}")
+}
+
+Variables
+Read-only local variables are defined using the keyword val. They can be assigned a value only once.
+
+val a: Int = 1  // immediate assignment
+val b = 2   // `Int` type is inferred
+val c: Int  // Type required when no initializer is provided
+c = 3       // deferred assignment
+
+Variables that can be reassigned use the var keyword.
+
+var x = 5 // `Int` type is inferred
+x += 1
+
+You can declare variables at the top level.
+
+val PI = 3.14
+var x = 0
+
+fun incrementX() { 
+    x += 1 
+}
+
+
+Creating classes and instances
+To define a class, use the class keyword.
+
+class Shape
+Copied!
+Properties of a class can be listed in its declaration or body.
+
+class Rectangle(var height: Double, var length: Double) {
+    var perimeter = (height + length) * 2
+}
+
+The default constructor with parameters listed in the class declaration is available automatically.
+
+val rectangle = Rectangle(5.0, 2.0)
+println("The perimeter is ${rectangle.perimeter}")
+
+Inheritance between classes is declared by a colon (:). Classes are final by default; to make a class inheritable, mark it as open.
+
+open class Shape
+
+class Rectangle(var height: Double, var length: Double): Shape() {
+    var perimeter = (height + length) * 2
+}
+
+Comments
+Just like most modern languages, Kotlin supports single-line (or end-of-line) and multi-line (block) comments.
+
+// This is an end-of-line comment
+
+/* This is a block comment
+   on multiple lines. */
+
+String templates
+var a = 1
+// simple name in template:
+val s1 = "a is $a" 
+a = 2
+// arbitrary expression in template:
+val s2 = "${s1.replace("is", "was")}, but now is $a"
+
+
+fun maxOf(a: Int, b: Int): Int {
+    if (a > b) {
+        return a
+    } else {
+        return b
+    }
+}
+
+n Kotlin, if can also be used as an expression.
+
+fun maxOf(a: Int, b: Int) = if (a > b) a else b
+
+for loop
+val items = listOf("apple", "banana", "kiwifruit")
+for (item in items) {
+    println(item)
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+or
+
+val items = listOf("apple", "banana", "kiwifruit")
+for (index in items.indices) {
+    prin
+val items = listOf("apple", "banana", "kiwifruit")
+for (index in items.indices) {
+    println("item at $index is ${items[index]}")
+}
+
+while loop
+val items = listOf("apple", "banana", "kiwifruit")
+var index = 0
+while (index < items.size) {
+    println("item at $index is ${items[index]}")
+    index++
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+See while loop.
+
+when expression
+fun describe(obj: Any): String =
+    when (obj) {
+        1          -> "One"
+        "Hello"    -> "Greeting"
+        is Long    -> "Long"
+        !is String -> "Not a string"
+        else       -> "Unknown"
+    }
+Target platform: JVMRunning on kotlin v.1.5.30
+See when expression.
+
+Ranges
+Check if a number is within a range using in operator.
+
+val x = 10
+val y = 9
+if (x in 1..y+1) {
+    println("fits in range")
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+Check if a number is out of range.
+
+val list = listOf("a", "b", "c")
+
+if (-1 !in 0..list.lastIndex) {
+    println("-1 is out of range")
+}
+if (list.size !in list.indices) {
+    println("list size is out of valid list indices range, too")
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+Iterate over a range.
+
+for (x in 1..5) {
+    print(x)
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+Or over a progression.
+
+for (x in 1..10 step 2) {
+    print(x)
+}
+println()
+for (x in 9 downTo 0 step 3) {
+    print(x)
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+See Ranges and progressions.
+
+Collections
+Iterate over a collection.
+
+for (item in items) {
+    println(item)
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+Check if a collection contains an object using in operator.
+
+when {
+    "orange" in items -> println("juicy")
+    "apple" in items -> println("apple is fine too")
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+Using lambda expressions to filter and map collections:
+
+val fruits = listOf("banana", "avocado", "apple", "kiwifruit")
+fruits
+    .filter { it.startsWith("a") }
+    .sortedBy { it }
+    .map { it.uppercase() }
+    .forEach { println(it) }
+Target platform: JVMRunning on kotlin v.1.5.30
+See Collections overview.
+
+Nullable values and null checks
+A reference must be explicitly marked as nullable when null value is possible. Nullable type names have ? at the end.
+
+Return null if str does not hold an integer:
+
+fun parseInt(str: String): Int? {
+    // ...
+}
+Copied!
+Use a function returning nullable value:
+
+fun printProduct(arg1: String, arg2: String) {
+    val x = parseInt(arg1)
+    val y = parseInt(arg2)
+   // Using `x * y` yields error because they may hold nulls.
+    if (x != null && y != null) {
+        // x and y are automatically cast to non-nullable after null check
+        println(x * y)
+    }
+    else {
+        println("'$arg1' or '$arg2' is not a number")
+    }    
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+or
+
+// ...
+if (x == null) {
+    println("Wrong number format in arg1: '$arg1'")
+    return
+}
+if (y == null) {
+    println("Wrong number format in arg2: '$arg2'")
+    return
+}
+// x and y are automatically cast to non-nullable after null check
+println(x * y)
+Target platform: JVMRunning on kotlin v.1.5.30
+See Null-safety.
+
+Type checks and automatic casts
+The is operator checks if an expression is an instance of a type. If an immutable local variable or property is checked for a specific type, there's no need to cast it explicitly:
+
+fun getStringLength(obj: Any): Int? {
+    if (obj is String) {
+        // `obj` is automatically cast to `String` in this branch
+        return obj.length
+    }
+    // `obj` is still of type `Any` outside of the type-checked branch
+    return null
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+or
+
+fun getStringLength(obj: Any): Int? {
+    if (obj !is String) return null
+    // `obj` is automatically cast to `String` in this branch
+    return obj.length
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+or even
+
+fun getStringLength(obj: Any): Int? {
+    // `obj` is automatically cast to `String` on the right-hand side of `&&`
+    if (obj is String && obj.length > 0) {
+        return obj.length
+    }
+    return null
+}
+Target platform: JVMRunning on kotlin v.1.5.30
+See Classes and Type casts.
