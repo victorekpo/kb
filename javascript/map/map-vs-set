@@ -1,0 +1,73 @@
+var array = [1, 2, 3, 3];
+
+var set = new Set(array); // Will have [1, 2, 3]
+assert(set.size, 3);
+
+var map = new Map();
+map.set('a', 1);
+map.set('b', 2);
+map.set('c', 3);
+map.set('C', 3);
+map.set('a', 4); // Has: a, 4; b, 2; c: 3, C: 3
+assert(map.size, 4);
+
+I think it is worth while to point out explicitly that a Set is not a key-value store. It is also different from an array in that it has no ordering. – 
+Ryan Quinn
+ Aug 18 '16 at 1:16
+
+In Map() , key can be any type [String, number, Object] but in regular object key must be a string type. – 
+Pushker Yadav
+ Jun 26 '18 at 5:37
+
+Set is one dimensional unique array, however Map is 2D and has key-value pair, where key shall be unique. – 
+user2513697
+ Sep 22 '19 at 10:38
+
+Use a Set when your dataset needs to be composed of unique values
+Use a Map when you have pairs of associated data. You map the keys to the values
+
+Example Set:
+There is a meeting with people coming from different organizations. Some people come from the same organization. We need to compose a list all the different organzations. For this we can use a set since we only want to include every organization once:
+
+const organization = new Set();
+
+organization.add('org1');
+organization.add('org2');
+organization.add('org3');
+organization.add('org1');
+organization.add('org3');
+organization.add('org1');
+
+for(let org of organization){
+  console.log(org);
+}
+
+Example Map:
+We have a pack of dogs and want to assign an age to each dog. We want to map the unique name of each dog to the age of the dog:
+
+const dogs = new Map([['fluffy', 10], ['barkie', 13]]);
+
+dogs.forEach((value, key) => console.log(key, value));
+
+An Object is also a collection of key value pairs and can fulfill often the same purpose as a Map can (which is creating key-value pairs). However, there are some key differences between a Map and an Object:
+
+Map is built in Iterable, this allows it to use the for of loop or its implementation of the forEach() method which an plain JS Object cannot use.
+Map has some nice built in methods on its prototype which makes working with it very nicely. Because al Objects inherit from Object.prototype is has access to more useful methods. For example, the size() method on Map returns the number of keys in the Map.
+
+var obj = {};
+obj.name= "Anand Deep Singh";
+console.log(obj.name); //logs "Anand Deep Singh"
+similarly in ES6, we can use regular object.
+
+var map = new Map();
+map.set("name","Anand Deep Singh");
+console.log(map.get("name")); //logs "Anand Deep Singh"
+But noticeable thing is a Map isn’t created with the literal object syntax, and that one uses set and get methods to store and access data.
+
+It has a has method to check whether the key exists in the object or not, delete method to delete the object and clear method to clear the entire object.
+
+Set is a unique list of values. It’s simply a unique list.
+
+var set = new Set(["a", "a","e", "b", "c", "b", "b", "b", "d"]);
+console.log(set); //logs Set {"a", "e", "b", "c", "d"}
+A Set can’t be accessed like an array, and it provides the same methods as 

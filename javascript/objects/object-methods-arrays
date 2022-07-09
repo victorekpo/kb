@@ -1,0 +1,213 @@
+Object.keys()
+Object.keys() creates an array containing the keys of an object.
+
+We can create an object and print the array of keys.
+
+// Initialize an object
+const employees = {
+    boss: 'Michael',
+    secretary: 'Pam',
+    sales: 'Jim',
+    accountant: 'Oscar'
+};
+
+// Get the keys of the object
+const keys = Object.keys(employees);
+
+console.log(keys);
+
+Output
+["boss", "secretary", "sales", "accountant"]
+
+As Object.keys converts your object’s keys into an array of keys, the forEach() array method can be used to iterate through the keys and values.
+
+// Iterate through the keys
+Object.keys(employees).forEach(key => {
+    let value = employees[key];
+
+     console.log(`${key}: ${value}`);
+});
+
+
+Output
+boss: Michael
+secretary: Pam
+sales: Jim
+accountant: Oscar
+
+Object.keys is also useful for checking the length of the converted array using the length property.
+
+// Get the length of the keys
+const length = Object.keys(employees).length;
+
+console.log(length);
+
+
+Object.values()
+Object.values() creates an array containing the values of an object.
+
+// Initialize an object
+const session = {
+    id: 1,
+    time: `26-July-2018`,
+    device: 'mobile',
+    browser: 'Chrome'
+};
+
+// Get all values of the object
+const values = Object.values(session);
+
+console.log(values);
+ 
+Output
+[1, "26-July-2018", "mobile", "Chrome"]
+
+Object.entries()
+Object.entries() creates a nested array of the key/value pairs of an object.
+
+// Initialize an object
+const operatingSystem = {
+    name: 'Ubuntu',
+    version: 18.04,
+    license: 'Open Source'
+};
+
+// Get the object key/value pairs
+const entries = Object.entries(operatingSystem);
+
+console.log(entries);
+ 
+Output
+[
+    ["name", "Ubuntu"]
+    ["version", 18.04]
+    ["license", "Open Source"]
+]
+
+Once we have the key/value pair arrays, we can use the forEach() method to loop through and work with the results.
+
+// Loop through the results
+entries.forEach(entry => {
+    let key = entry[0];
+    let value = entry[1];
+
+    console.log(`${key}: ${value}`);
+});
+ 
+Output
+name: Ubuntu
+version: 18.04
+license: Open Source
+
+The Object.entries() method will only return the object instance’s own properties, and not any properties that may be inherited through its prototype.
+
+Object.assign()
+Object.assign() is used to copy values from one object to another.
+
+We can create two objects, and merge them with Object.assign().
+
+// Initialize an object
+const name = {
+    firstName: 'Philip',
+    lastName: 'Fry'
+};
+
+// Initialize another object
+const details = {
+    job: 'Delivery Boy',
+    employer: 'Planet Express'
+};
+
+// Merge the objects
+const character = Object.assign(name, details);
+
+console.log(character);
+ 
+Output
+{firstName: "Philip", lastName: "Fry", job: "Delivery Boy", employer: "Planet Express"}
+It is also possible to use the spread operator (...) to accomplish the same task. In the code below, we’ll modify how we declare character through merging the name and details objects.
+
+// Initialize an object
+const name = {
+    firstName: 'Philip',
+    lastName: 'Fry'
+};
+
+// Initialize another object
+const details = {
+    job: 'Delivery Boy',
+    employer: 'Planet Express'
+};
+
+// Merge the object with the spread operator
+const character = {...name, ...details}
+
+console.log(character);
+ 
+Output
+{firstName: "Philip", lastName: "Fry", job: "Delivery Boy", employer: "Planet Express"}
+This spread syntax in object literals is also known as shallow-cloning.(Refer to shallow vs deep cloning).
+
+Object.freeze()
+Object.freeze() prevents modification to properties and values of an object, and prevents properties from being added or removed from an object.
+
+// Initialize an object
+const user = {
+    username: 'AzureDiamond',
+    password: 'hunter2'
+};
+
+// Freeze the object
+const newUser = Object.freeze(user);
+
+newUser.password = '*******';
+newUser.active = true;
+
+console.log(newUser);
+ 
+Output
+{username: "AzureDiamond", password: "hunter2"}
+In the example above, we tried to override the password hunter2 with *******, but the password property remained the same. We also tried to add a new property, active, but it was not added.
+
+Object.isFrozen() is available to determine whether an object has been frozen or not, and returns a Boolean.
+
+Object.seal()
+Object.seal() prevents new properties from being added to an object, but allows the modification of existing properties. This method is similar to Object.freeze(). Refresh your console before implementing the code below to avoid an error.
+
+// Initialize an object
+const user = {
+    username: 'AzureDiamond',
+    password: 'hunter2'
+};
+
+// Seal the object
+const newUser = Object.seal(user);
+
+newUser.password = '*******';
+newUser.active = true;
+
+console.log(newUser);
+ 
+Output
+{username: "AzureDiamond", password: "*******"}
+The new active property was not added to the sealed object, but the password property was successfully changed.
+
+Object.getPrototypeOf()
+Object.getPrototypeOf() is used to get the internal hidden [[Prototype]] of an object, also accessible through the __proto__ property.
+
+In this example, we can create an array, which has access to the Array prototype.
+
+const employees = ['Ron', 'April', 'Andy', 'Leslie'];
+
+Object.getPrototypeOf(employees);
+ 
+Output
+[constructor: ƒ, concat: ƒ, find: ƒ, findIndex: ƒ, pop: ƒ, …]
+We can see in the output that the prototype of the employees array has access to pop, find, and other Array prototype methods. We can confirm this by testing the employees prototype against Array.prototype.
+
+Object.getPrototypeOf(employees) === Array.prototype;
+Output
+true
+This method can be useful to get more information about an object or ensure it has access to the prototype of another object.
+
+There is also a related Object.setPrototypeOf() method that will add one prototype to another object.

@@ -1,0 +1,14 @@
+{
+  "name": "vic-tests",
+  "version": "1.0.0",
+  "description": "Testing examples using jest",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage --watchAll"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^27.4.7"
+  }
+}

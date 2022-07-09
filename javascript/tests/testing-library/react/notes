@@ -1,0 +1,32 @@
+install jest testing-library/react @types/jest @testing-library/jest-dom
+jest --init
+yes, no, jsdom, yes, babel, yes
+
+Queries: 
+https://testing-library.com/docs/react-testing-library/cheatsheet
+
+Matchers
+toBeDisabled
+toBeEnabled
+toBeEmptyDOMElement
+toBeInTheDocument
+toBeInvalid
+toBeRequired
+toBeValid
+toBeVisbile
+toContainElement
+toContainHTML
+toHaveACcessibleDescription
+toHaveAccessibleName
+toHaveAttribute
+toHaveClass
+toHaveFocus
+toHaveFormValues
+toHaveStyle
+toHaveTextContent
+toHaveValue
+toHaveDisplayValue
+toBeChecked
+toBePartiallyChecked
+toHaveErrorMessage
+...refer to github

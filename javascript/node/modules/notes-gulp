@@ -1,0 +1,78 @@
+Since your task might contain asynchronous code you have to signal gulp when your task has finished executing (= "async completion").
+
+In Gulp 3.x you could get away without doing this. If you didn't explicitly signal async completion gulp would just assume that your task is synchronous and that it is finished as soon as your task function returns. Gulp 4.x is stricter in this regard. You have to explicitly signal task completion.
+
+You can do that in six ways:
+
+1. Return a Stream
+This is not really an option if you're only trying to print something, but it's probably the most frequently used async completion mechanism since you're usually working with gulp streams. Here's a (rather contrived) example demonstrating it for your use case:
+
+var print = require('gulp-print');
+
+gulp.task('message', function() {
+  return gulp.src('package.json')
+    .pipe(print(function() { return 'HTTP Server Started'; }));
+});
+The important part here is the return statement. If you don't return the stream, gulp can't determine when the stream has finished.
+
+2. Return a Promise
+This is a much more fitting mechanism for your use case. Note that most of the time you won't have to create the Promise object yourself, it will usually be provided by a package (e.g. the frequently used del package returns a Promise).
+
+gulp.task('message', function() { 
+  return new Promise(function(resolve, reject) {
+    console.log("HTTP Server Started");
+    resolve();
+  });
+});
+Using async/await syntax this can be simplified even further. All functions marked async implicitly return a Promise so the following works too (if your node.js version supports it):
+
+gulp.task('message', async function() {
+  console.log("HTTP Server Started");
+});
+3. Call the callback function
+This is probably the easiest way for your use case: gulp automatically passes a callback function to your task as its first argument. Just call that function when you're done:
+
+gulp.task('message', function(done) {
+  console.log("HTTP Server Started");
+  done();
+});
+4. Return a child process
+This is mostly useful if you have to invoke a command line tool directly because there's no node.js wrapper available. It works for your use case but obviously I wouldn't recommend it (especially since it's not very portable):
+
+var spawn = require('child_process').spawn;
+
+gulp.task('message', function() {
+  return spawn('echo', ['HTTP', 'Server', 'Started'], { stdio: 'inherit' });
+});
+5. Return a RxJS Observable.
+I've never used this mechanism, but if you're using RxJS it might be useful. It's kind of overkill if you just want to print something:
+
+var of = require('rxjs').of;
+
+gulp.task('message', function() {
+  var o = of('HTTP Server Started');
+  o.subscribe(function(msg) { console.log(msg); });
+  return o;
+});
+6. Return an EventEmitter
+Like the previous one I'm including this for completeness sake, but it's not really something you're going to use unless you're already using an EventEmitter for some reason.
+
+gulp.task('message3', function() {
+  var e = new EventEmitter();
+  e.on('msg', function(msg) { console.log(msg); });
+  setTimeout(() => { e.emit('msg', 'HTTP Server Started'); e.emit('finish'); });
+  return e;
+});
+
+
+gulp.task('simpleTaskName', async function() {
+  // code...
+});
+or into this:
+
+gulp.task('simpleTaskName', done => {
+  // code...
+  done();
+});
+
+Source:https://stackoverflow.com/questions/36897877/gulp-error-the-following-tasks-did-not-complete-did-you-forget-to-signal-async

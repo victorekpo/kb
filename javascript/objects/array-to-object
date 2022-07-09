@@ -1,0 +1,18 @@
+Using Object.assign or spread operator
+ECMAScript 6 introduces the easily polyfillable Object.assign:
+
+The Object.assign() method is used to copy the values of all enumerable own properties from one or more source objects to a target object. It will return the target object.
+
+Object.assign({}, ['a','b','c']); // {0:"a", 1:"b", 2:"c"}
+The own length property of the array is not copied because it isn't enumerable.
+
+Also, you can use ES8 spread syntax on objects to achieve the same result:
+
+{ ...['a', 'b', 'c'] }
+
+function toObject(arr) {
+  var rv = {};
+  for (var i = 0; i < arr.length; ++i)
+    rv[i] = arr[i];
+  return rv;
+}

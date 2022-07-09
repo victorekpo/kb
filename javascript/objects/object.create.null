@@ -1,0 +1,4 @@
+When using objects to create maps, be sure to use Object.create(null) so that the object that is created does not inherit any properties from Object, or you may run in into an issue with your map. 
+Safely, you can use the Map() or WeakMap() data structure.
+Other benefits of Map() and WeakMap() is that you can use any data structure as keys in maps, but not in traditional objects. 
+

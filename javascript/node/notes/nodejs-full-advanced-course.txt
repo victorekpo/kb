@@ -1,0 +1,213 @@
+What is NodeJS?
+-Javascript runtime, built on V8 (developed by Google), written in C++, compiles to Machine code, allows you to run Javascript code anywhere, not in a browser.
+
+Install NodeJS
+-Can use Node Version Manager (NVM) to switch node versions as needed.
+-Install VSCode, add Material Icon theme
+-Sample first code:
+---
+const fs = require('fs');
+
+fs.writeFileSync('hello.txt', 'Hello from Node.js'); //saves to nodejs, npm folder
+---
+
+Understanding the Role & Usage of Node.js
+-Used to write server-side code
+-Used for utility scripts, build tools
+-Run server (Create server and listen to incoming requests)
+-Business Logic (handle requests, validate input, connect to database)
+-Responses (return responses [rendered html, json,xml,files, etc]).
+-Alternatives include Python, PHP, Ruby, ASP.NET
+
+Course Outline
+I. Getting Started
+-The REPL
+  -Read (read user input)
+  -Eval (evaluate user input)
+  -Print (output result) 
+  -Loop (return and wait for new input)
+-REPL is more of a playground, execute code as you write it.
+-alternative to using a REPL is to execute files
+  -used for real apps
+  -predictable sequence of steps
+
+
+II. Javascript Refresher
+Javascript Basics
+-weakly typed language (no explicit type assignment, data types can be switched dynamically)
+-object-oriented language (data can be organized in logical objects, be aware of primitive and reference types)
+-versatile language (runs in browser & directly on a PC/server, can perform a broad variety of tasks)
+
+Refreshing the Core Syntax
+--play.js--
+var name = "Vic"; //string
+var age = 29; //number
+var hasHobbies = true; //boolean
+
+console.log(name);
+
+function summarizeUser(userName, userAge, userHasHoby) {
+  return ('Name is ' + userName + ', age is ' + userAge + ' and the user has hobbies: ' + userHasHobby);
+}
+
+console.log(summarizeUser(name, age, hasHobbies));
+
+//the parameters of the function are local variables to the function and cannot be accessed outside of the function.
+--
+
+-var is a keyword that creates a new variable (outdated)
+-let also creates a variable (newer), let variables cannot be declared more than once but can be changed later. const variables cannot be changed later.
+
+Why Let is Better Than Var
+The scope is global when a var variable is declared outside a function. This means that any variable that is declared with var outside a function block is available for use in the whole window. var is function scoped when it is declared within a function. This means that it is available and can be accessed only within that function. (https://www.freecodecamp.org/news/var-let-and-const-whats-the-difference/)
+let is block scoped
+A block is a chunk of code bounded by {}. A block lives in curly braces. Anything within curly braces is a block.
+let can be updated but not re-declared.
+Just like var,  a variable declared with let can be updated within its scope. Unlike var, a let variable cannot be re-declared within its scope.
+    let greeting = "say Hi";
+    if (true) {
+        let greeting = "say Hello instead";
+        console.log(greeting); // "say Hello instead"
+    }
+    console.log(greeting); // "say Hi"
+Hoisting of let
+Just like  var, let declarations are hoisted to the top. Unlike var which is initialized as undefined, the let keyword is not initialized. So if you try to use a let variable before declaration, you'll get a Reference Error.
+const allows you to define a constant, constants cannot be redeclared or redefined and also live within their block scope.
+Note: To create a constant property, use Object.defineProperty
+let obj = {};
+Object.defineProperty( obj, "LUCKY_NUMBER", {
+  value: 7,
+  writable: false,
+  enumerable: true,
+  configurable: true
+});
+
+-arrow function example, function name is implicitly defined by constant name. 
+const add = (a,b) => a+b // omit return and curly braces
+Note: when using this inside of an arrow function, it refers to the global scope.
+
+Object Review
+const person = {
+  name: 'Vic',
+  age: 34,
+  greet: () => {
+    console.log('Hi, I am' + this.name);
+  }
+//the above will returned undefined, to fix this we have two methods
+  greet: function() {
+    console.log('Hi, I am' + this.name);
+  }
+or
+  greet() {
+    console.log('Hi, I am' + this.name);
+  }
+}
+
+Arrays
+-defined with square brackets, can use different types in an array (strings, numbers, bool, objects, other arrays, etc.).
+const hobbies = ['Sports', 'Cooking'];
+for (let hobby of hobbies) {
+  console.log(hobby);
+}
+map allows you to transform an array and outputs a new array
+let newArr = hobbies.map(hobby => {
+  return 'Hobby: ' + hobby;
+ })
+
+Objects and arrays are considered reference types.
+hobbies.push('Programming');
+console.log(hobbies);
+What a constant stores is the pointer (the address) to the object. That is why you can push new elements to an array or edit properties of an object, even though the object/array is a constant.
+
+Rest & Spread Operators
+-immutability - the concept to never edit existing values but replace with copies + the changes.
+const copiedArray = hobbies.slice(); // with no arguments, it will copy the entire array
+const copiedArray = [hobbies] // creates nested array, with the actual array inside.
+const copiedArray = [...hobbies]; // spread operator takes the array after the operator and pulls out all the elements/properties and puts it to whatever is around that spread operator.
+-rest operator does the oppsite
+const toArray = (arg1, arg2, arg3) => {
+  return[arg1, arg2, arg3];
+};
+console.log(toArray(1,2,3,4)); // will not add the 4th value.
+const toArray = (...args) => {
+  return args;
+}
+console.log(toArray(1,2,23,4));
+spread operator - pulls elements/properties out of arrays or objects
+rest operator - merge multiple arguments into an array
+
+Destructuring (Object & Array)
+const person = {
+  name: 'Vic',
+  age: 34,
+  greet() {
+    console.log('Hi, I am' + this.name);
+  }
+}
+
+const printName = (personData) => {
+  console.log(personData.name);
+}
+printName(person);
+//the above syntax works but destructuring is better.
+
+Object Destructuring
+//in the below example, the properties are pulled out of the incoming object
+const printName = ({ name, age }) => {
+  console.log(name);
+}
+const { name, age } = person; //will create two constants from the person object, name and age propertiesf
+console.log(name, age);
+
+Array Destructuring
+const [hobby1,hobby2] = hobbies; // will pull out the first two values from the hobbies array and assign as constants, unlike object destructuring array destructuring names can be customized
+
+Async Code & Promises
+Example of async code:
+---
+const fetchData = callback => {
+  setTimeout(() => {
+    callback('Done!');
+  }, 1500);
+};
+
+setTimeout(() => {
+  console.log('Timer is done!');
+  fetchData(text => {
+    console.log(text);
+  });
+}, 2000);
+console.log('Hello');
+console.log('Hi!');
+---
+
+III. Node.js Basics
+IV. Efficent Development
+V. Using Express.js
+VI. Templating Engines
+VII. Model-View-Controller (MVC)
+VIII. Advanced Routes & Models
+IX. Node + SQL (MySQL)
+X. Using Sequelize
+XI. Node + NoSQL (mongoDB)
+XII. Using Mongoose
+XIII. Sessions & Cookies
+XIV. Authentication
+XV. Sending E-mails
+XVI. Authentication Deep Dive
+XVII. User Input Validation
+XVIII. Error Handling
+XIX. File Upoads & Downloads
+XX. Pagination
+XXI. Async Requests
+XXII. Handling Payments (StripeJS)
+XXIII. Rest API Basics
+XXIV. Advanced REST API Features
+XXV. Using async-await
+XXVI. Websockets & socket.io 
+XXVII. GraphQL
+XXVIII. Deployment
+XXIX. Beyond Web Servers
+XXX. Node + TypeScript, Deno
+XXXI. Next Steps 
+

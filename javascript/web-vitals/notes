@@ -1,0 +1,3 @@
+Note that some of these metrics will not report until the user has interacted with the page, switched tabs, or the page starts to unload. If you don't see the values logged to the console immediately, try reloading the page (with preserve log enabled) or switching tabs and then switching back.
+
+https://github.com/GoogleChrome/web-vitals

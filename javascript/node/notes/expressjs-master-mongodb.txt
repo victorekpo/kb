@@ -1,0 +1,262 @@
+ExpressJS Master x HTTP x MERN x Focus on MongoDB & Mongoose
+
+1. Install nodeJS
+2. Install Git Bash
+3. Install Postman & Insomnia
+4. Install npm via nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+
+NPM - Nodes Package Manager
+-online repository for publishing open source node.js projects
+-command line utility for installing and interacting with packages and modules
+-used to manage packages
+-makes it easy for developers to update, share and reuse code.
+-comes installed with Node.JS
+-frequently updated compared to node.js
+-To check the current version of npm, type in:
+npm -v
+-To update to the latest version of npm, type in:
+npm install npm@latest -g
+
+NPM Basic Commands
+npm install <package name> -g - Install package locally or globally.
+npm uninstall <package name> -g - Uninstall local or global package.
+npm search <package name> - Search package.
+npm ls -g - List local or global packages.
+npm update -g - Update local or global packages.
+
+Global Objects
+-objects available in all modules.
+Class: Buffer - Used to handle binary data.
+__dirname - Directory name of the current module. (local to each module)
+__filename - File name of the current module.  (local to each module)
+clearImmediate(immediateObject) - Cancels an Immediate object
+console - Prints to console
+exports - A reference to the module.exports
+require() - To require modules
+
+Synchronous and Asynchronous Tasks
+Synchronous - 1 at a time, blocks other operations until the first is complete
+Example: 
+01 - Web page,image,etc. -> 02 - HTTP request -> 03 - data query -> 04 - query response -> 05 - new web page, images, etc.
+Asynchronous - Nonblocking, allows for several operations to run in unison.
+AJAX Web Model
+Client works independently <-> Web Page images, etc. <-> Web Server <-> Data Query <-> Database <-> Query Response <-> Web Server <-> AJAX engine communicates with the server <-> CLIENT
+//ASYNCHRONOUS TASK
+fs = require('fs');
+function getData(err, data) {
+  console.log('data:',data);
+}
+
+fs.readdir('c:/', getData);
+
+console.log("This is Asynchronous");
+
+(using callback functions).
+
+Asynchronous vs Synchronous EventListener
+-The EventListener calls all listeners synchronously.
+-They are called in the order in which they were registered.
+-When appropriate, listener functions can switch to an asynchronous mode of operation using the setImmediate() or process.nextTick() methods.
+//EXAMPLE
+const EventEmitter = require('events');
+class MyEmitter extends EventEmitter {}
+const myEmitter = new MyEmitter();
+myEmitter.on('event', (a, b) => {
+  setImmediate(() => {
+    console.log('this happens asynchronously');
+    console.log(a)
+  });
+});
+myEmitter.emit('event', 'a', 'b');
+
+Events are "things" that happen.
+Examples could be:
+-input field entry
+-button click
+-door opening
+-door closing
+-mouse movement
+-web page loading
+
+Emitters bind events to functions to cause events to be "emulated" as they are happening or according to the logic.
+-objects that emit events that cause function objects which are listeners to be called. 
+Examples could be:
+-net.Server object emits an event each time a peer connects to it.
+-fs.ReadStream emits an event when the file is opened.
+-stream emits an event whenever data is available to be read.
+
+-All objects that emit events are instances of the EventEmitter class.
+-eventEmitter.on() function allows one ore more functions to be attached to named events emitted by the object.
+-event names are camel-cased strings but any valid Javascript property key can be used.
+-when an emitter emits an event, all the statements/functions attached to that event are called synchronously and any values returned are ignored and will be discarded.
+
+CallBacks
+-asynchronous equivalent of a function called when a task completes.
+-prevents blocking and allows other code to run.
+-Node.JS is an asynchronous platform, uses lots of callbacks.
+
+Components of a Node.js Application
+-Import required modules => var http = require('http'); using the required() directive.
+-a module encapsulates related code into a single unit of code.
+-Create Server => http.createServer(function(request,response) { }; a function you create that will listen out for a client's request and give a response.
+-Read request and return response.
+-Send a response header => response.writeHead(200,{'content-Type'; 'text/plain'});
+1xx - Request received, process continuing
+2xx - Response is a success, action successful, understood and accepted.
+3xx - Redirection, further action must be taken
+4xx - Client error, the request contains incorrect syntax or cannot be fulfilled.
+5xx - Server error, server failed to fulfill an apparent valid request.
+-Send the response body e.g. as "Hello World" => response.end('Hello World\n');
+-Port where application will run => }.listen(8080); (default is usually 8080).
+
+Modules and Packages
+-Modules are node.js libraries.
+-A package is one or more modules grouped or packaged together.
+-Every nodeJS app is a package and consists of a package.json file which manages dependencies (modules and settings).
+-Creating your own modules leverages the concept of code reuse.
+-Export object and pass in data that the export object will use.
+//EXAMPLE - myModule.js
+exports.myText = "I am a Module"; //saves the property .myText in the exports object (which sends the property)
+
+//EXAMPLE - moduleTest.js
+var myModule = require('./myModules.js'); // (requires picks up the entire module/library).
+console.log(myModule.myText); // (calls the specific myText property from this library).
+
+Installing and using third-party packages
+-npm is used to install packages
+-Gulp: Toolkit for automating repetitive and time consuming tasks.
+npm i gulp or npm install gulp or npm i gulp@latest 
+//EXAMPLE GULP FILE - gulpfile.js
+var gulp = require('gulp');
+gulp.task('default',function() {  // gulp.task is called 'default', runs by default when gulp is executed. Next is the call back function to execute.
+  console.log('hello from gulp');
+});
+-To use gulp from the command line, install it globally, or you will have to run via node from within a script.
+
+RDBMS vs MongoDB
+RDMBS		MongoDB
+Table		Collection
+Column		Key	
+Value		Value  			
+Record | Rows	Document | Object 	(units of storing data)
+Relational - data models have to be in schemas
+MongoDb - schemas flexible (does not enforce schema)
+
+EXPRESS.JS
+-NodeJS framework for building web and mobile applications.
+-Provides a set of robust features.
+-Fast, minimal, and flexible.
+-What is a framework? - an environment with a set of tools to be creative. Tools include libraries, etc., a scaffold that you build your application around., provides base functionality where you can extend your applications on.
+
+Installing Express.Js
+-
+
+What is MongoDB?
+-a document database, stores data in flexible JSON-like documents, document model amps to the objets in your app code, free and open source, distributed database, flexible and scalable with querying and indexing.
+-mLab (cloud environment  for mongodb, free hosting service for mongodob, able to easily ship dbase), runs on AWS, GCP, or Azure.
+-MongoDB is a document databse, a document represents each record in a MongoDB collection. The documents within a collection can have different fields. The documents structure are composed of a file and value pairs, similar to JSON objects or other mapping data types.
+-Collection is a grouping of MongoDB documents, this is equivalent to a table. A collection exists within a single database.
+
+What is Mongoose?
+-MongoDB object modeling for node.js, allows you to create structure to easily interact with data through objects, and also for validation.
+-working with MongoDB with object schemas.
+
+MongoDB Data Types
+-String - Most common and stores strings(text) in UTF-8 format
+-Integer - Stores numerical values. It can be 32 or 64 bit.
+-Boolean - Stores values that are either true or false.
+-Arrays - Stores multiple values into one key.
+-Timestamp - Records when a document has been added or modified.
+-Object - Used for embedded documents
+-Null - Stores Null value
+-Date - Used to store current date
+-Object ID - stores document ID
+-Binary Data - Stores binary data
+-Code - Stores JS code
+-Regular expression - Stores the regular expressions
+
+-We can use mongoose to connet to our database. 
+
+Setting up Structure with Mongoose / Creating an Object Model
+(capital M indicates that it is a model/schema).
+var Message = mongoose.model('Message',{
+  name : String,
+  message : String
+})
+
+Creating an Object based on Model
+var message = new Model(req.body) // instantiate model
+message.save((err) => {
+  if(err) 
+    sendStatus(500)
+    messages.push(req.body)
+    io.emit('message', req.body)
+
+})
+
+Showing messages from Database
+app.get('/messags', (req,res) => {
+  Message.find({}, (err,messages) => {
+    res.send(messages)
+  })
+})
+
+-monk - used as a layer to manage monogob
+
+What is Joi?
+-Joi is a schema description language and data validator for JavaScript.
+-Example: Can be used to validate response from a backend endpoint or maybe verifying what goes into our REST API.
+npm i @hapi/joi
+
+Express APIs
+
+MongoDB Methods
+
+What is Nodemon?
+-a utility that monitors for any changes in your app source code and automatically restarts your server, detects default file extension to monitor, default support for node and coffescript, can run executable like python, watches specific directories. (npm install -g nodemon)
+
+
+What is HTTP?
+-HyperText Transfer Protocol (HTTP), designed to enable communication betwen clients and servers
+Methods
+get, post, put, head, delete, patch, Trace, and more...
+get - Used to request data from a specified resource, harmless, introduces new data, can be bookmarked and cached, remains in browser history, restrictions on data length of request, less secure, data is visible to all from URL, safe method, no sideeffects
+post - Used to send data to a server, cannot be bookmarked or cached, does not remain in browser history, no restrictions on request data length, more secure, data not visible in URL
+put - Used to update existing data in server
+head - Like get but without the response body, safe method, no sideeffects
+delete - Deletes a specified resource from the server
+patch - Applies partial modifications to a resource
+Trace - Echoes the received request, safe method, no sideeffects
+
+HTTP Response Codes
+-These are messages that get returned folowing request to the server.
+1x (100, 101)
+2x (200 - 206)
+3x (300 - 308)
+4x (400 - 451)
+5x (500 - 504)
+
+200 ok - Standard message for a successful HTTP request.
+201 created - Request fulfilled and new resource created.
+400 Bad request | 404 - Invalid syntax | request cannot be fulfilled.
+403 Forbidden - Server refusing to respond to request.
+405 Method not allowed - Request method not supported.
+500 Internal Server error - Server unable to fulfill request due to issues.
+
+More Notes:
+express.json() is a method inbuilt in express to recognize the incoming request object as a JSON object, middleware.
+
+Parameters and Returning the First Found Item in an Array
+songs = [ 
+  { "id" : 1,
+    "artist" : "Artist", 
+    "song" : "Song" 
+  }
+]
+
+app.get('/api/songs/:id', (req,res) => {
+  const song = songs.find(c => c.id === parseInt(req.params.id));
+  if(!songs).res.status(404).send('song not found');
+  res.send(song);
+});

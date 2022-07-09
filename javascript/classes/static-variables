@@ -1,0 +1,32 @@
+static
+The static keyword defines a static method or property for a class. Neither static methods nor static properties can be called on instances of the class. Instead, they're called on the class itself.
+
+Static methods are often utility functions, such as functions to create or clone objects, whereas static properties are useful for caches, fixed-configuration, or any other data you don't need to be replicated across instances.
+
+class ClassWithStaticMethod {
+
+  static staticProperty = 'someValue';
+  static staticMethod() {
+    return 'static method has been called.';
+  }
+
+}
+
+console.log(ClassWithStaticMethod.staticProperty);
+// output: "someValue"
+console.log(ClassWithStaticMethod.staticMethod());
+// output: "static method has been called."
+
+
+ class Example {
+   static staticVariable = 'GeeksforGeeks';
+    
+  //static variable defined
+   static staticMethod() {
+     return 'static method has been called.';
+      }
+  }
+  // static variable called
+  console.log(Example.staticVariable);
+  // static method called
+  console.log(Example.staticMethod());
