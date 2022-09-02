@@ -1,5 +1,7 @@
-#docker compose cp reverseproxy:/etc/nginx/mime.types ./mime.types
+#docker compose cp reverseproxy:/etc/nginx/nginx.conf ./nginx.conf
 #docker compose cp reverseproxy:/etc/nginx/conf.d/default.conf ./default.conf
+#docker compose cp reverseproxy:/etc/nginx/mime.types ./mime.types
+#docker compose cp reverseproxy:/usr/share/nginx/html ./
 
 
 # in windows (git bash)
