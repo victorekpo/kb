@@ -18,8 +18,8 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - ./config/proxy/nginx.conf:/etc/nginx/nginx.conf
-      - ./config/proxy/default.conf:/etc/nginx/conf.d/default.conf
+      - ./config/reverseproxy/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/reverseproxy/default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - teknixcovpc
       - no-internet
