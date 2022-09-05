@@ -20,7 +20,6 @@ services:
       - ./config/fileserver/default.conf:/etc/nginx/conf.d/default.conf
       - ./files:/usr/share/nginx/html
     networks:
-      - teknixcovpc
       - no-internet
     depends_on: 
       - reverseproxy
