@@ -6,3 +6,4 @@
 
 # in windows (git bash)
 #winpty docker-compose exec reverseproxy sh
+#winpty docker run -it --entrypoint bash node:latest

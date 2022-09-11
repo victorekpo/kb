@@ -34,6 +34,15 @@ services:
     networks:
       - teknixcovpc
       - no-internet
+  
+  express-server:
+    image: "node:latest"
+    volumes:
+      - ./express/app:/usr/src/app
+    working_dir: "/usr/src/app"
+    command: "sh -c 'npm i && npm run start'"
+    networks:
+      - no-internet
 
 networks:
   teknixcovpc:
