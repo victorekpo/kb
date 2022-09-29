@@ -1,8 +1,8 @@
 //Require Express module
 const express = require('express');
 const request = require('request')
-, JSONStream = require('JSONStream')
-, es = require('event-stream')
+const JSONStream = require('JSONStream')
+const es = require('event-stream')
 const path = require('path');
 
 //Define port for local web server
@@ -18,8 +18,7 @@ app.get('/', function(req,res){
 
 app.get('/pipe', function(req,res) {
   res.writeHead(200, {
-    'Content-Type': 'text/plain',
-    'Transfer-Encoding': 'chunked'
+    'Content-Type': 'application/json'
   });
   
   //const pipe = req.pipe(request.get('http://localhost:5000/data'));
@@ -33,33 +32,45 @@ app.get('/pipe', function(req,res) {
   //   return data  
   // });
 
-  newReq.pipe(stream);
+  while(count < 1000) {
+    newReq.pipe(stream);
+    count++;
+  }
+  
+  
+  newReq.on('close', function() {
+    console.log('req closed');
+  });
+
+  newReq.on('pipe', function() {
+    console.log('req piped');
+  });
+
+  newReq.on('end', function() {
+    console.log('req ended');
+  });
+
+  newReq.on('data', function() {
+    console.log('req data');
+  });
+
   //stream.pipe(logger);
   
-
   stream.on('data', function(data) {
-    //res.write(data);
+    res.write(JSON.stringify(data));
     console.log('received:', data);
+    //count++;
+  });
+
+  stream.on('end', function() {
+    console.log('total streams',count)
     res.end();
   });
-  // pipe.on('data', function(chunk) {
-  //   response.push(chunk);
-  //   if(response.length > count){
-  //     res.write(chunk);
-  //     count++;
-  //   }
-  // });
-  
-  // pipe.on('end', function() {
-  //   const res2 = Buffer.concat(response);
-  //   console.log(res2);
-  //   res.end();
-  // });
 });
 
 app.get('/data', function(req,res) {
   res.header("Content-Type",'application/json');
-  res.sendFile(path.join(__dirname, 'data1.json'));
+  res.sendFile(path.join(__dirname, 'data3.json'));
 });
 
 //Listen on the defined port
