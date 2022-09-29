@@ -22,7 +22,7 @@ app.get('/pipe', function(req,res) {
   });
   
   //const pipe = req.pipe(request.get('http://localhost:5000/data'));
-  const response = [];
+  let response = [];
   let count=0;
   var stream = JSONStream.parse() //rows, ANYTHING, doc
 
@@ -38,16 +38,28 @@ app.get('/pipe', function(req,res) {
   }
 
   //stream.pipe(logger);
-  
+  stream.on('drain', function() {
+    console.log('draining');
+  })
+
   stream.on('data', function(data) {
-    res.write(JSON.stringify(data));
-    console.log('received:', data);
+    response.push(data);
+    console.log('response array', response.length)
+    if(response.length == 10) {
+      res.write(JSON.stringify(response));
+      console.log('received:', response);
+      response=[];
+    }
+
+    
     //count++;
   });
 
   stream.on('end', function() {
     console.log('total streams',count)
-    res.end();
+    if(response.length == 0) {
+      res.end();
+    }
   });
 });
 
