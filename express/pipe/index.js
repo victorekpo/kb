@@ -36,23 +36,6 @@ app.get('/pipe', function(req,res) {
     newReq.pipe(stream);
     count++;
   }
-  
-  
-  newReq.on('close', function() {
-    console.log('req closed');
-  });
-
-  newReq.on('pipe', function() {
-    console.log('req piped');
-  });
-
-  newReq.on('end', function() {
-    console.log('req ended');
-  });
-
-  newReq.on('data', function() {
-    console.log('req data');
-  });
 
   //stream.pipe(logger);
   
