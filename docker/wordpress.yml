@@ -1,0 +1,90 @@
+version: '3.1'
+
+services:
+  traefik:
+    image: "traefik:latest"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8087:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+      - "./certs/:/certs/:ro"
+      - "./traefik.yml:/etc/traefik/dynamic_conf/conf.yml"
+    networks:
+      - teknixcovpc
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--api.insecure"
+      - "--api.dashboard=true"
+      - "--certificatesresolvers.let.acme.httpchallenge.entrypoint=websecure"
+      - "--certificatesresolvers.let.acme.email=vic@vrodesigns.com"
+      - "--certificatesresolvers.let.acme.httpchallenge=true"
+      - "--certificatesresolvers.let.acme.storage=/letsencrypt/acme.json"
+    labels:
+      traefik.enable: true
+      # Global redirection: http to https
+      traefik.http.routers.http-catchall.rule: HostRegexp(`{host:(www\.)?.+}`)
+      traefik.http.routers.http-catchall.entrypoints: web
+      traefik.http.routers.http-catchall.middlewares: wwwtohttps
+      # Global redirection: https (www.) to https
+      traefik.http.routers.wwwsecure-catchall.rule: HostRegexp(`{host:(www\.).+}`)
+      traefik.http.routers.wwwsecure-catchall.entrypoints: websecure
+      traefik.http.routers.wwwsecure-catchall.tls: true
+      traefik.http.routers.wwwsecure-catchall.middlewares: wwwtohttps
+      # middleware: http(s)://(www.) to  https://
+      traefik.http.middlewares.wwwtohttps.redirectregex.regex: ^https?://(?:www\.)?(.+)
+      traefik.http.middlewares.wwwtohttps.redirectregex.replacement: https://$${1}
+      traefik.http.middlewares.wwwtohttps.redirectregex.permanent: true
+
+  vrodesigns:
+    image: wordpress:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.teknixco.rule=Host(`vrodesigns.com`,`vrofashion.com`)"
+      - "traefik.http.routers.teknixco.entrypoints=websecure"
+      - "traefik.http.routers.teknixco.tls.certresolver=let"
+    volumes:
+#      - /home/ubuntu/sites/teknixco/apache2:/etc/apache2:delegated
+      - /home/ubuntu/sites/teknixco/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    environment:
+      - WORDPRESS_DB_HOST=mysql:3306
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpresspassword
+      - WORDPRESS_DB_NAME=wordpressdb
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - teknixcovpc
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: wordpressdb
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpresspassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - teknixcovpc
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  teknixcovpc:
+    driver: bridge
+
+volumes:
+  mysql_data:
+
